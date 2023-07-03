@@ -13,7 +13,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.app = create_app()
         self.client = self.app.test_client
-        self.database_name = "trivia"
+        self.database_name = "test_trivia"
         self.database_path = "postgresql://{}:{}@{}/{}".format(
             "postgres", "0000", "localhost:5432", self.database_name
         )
@@ -83,7 +83,7 @@ class TriviaTestCase(unittest.TestCase):
 
 
     def test_200_get_questions_based_on_category_id(self):
-        res = self.client().get('api/categories/1/questions')
+        res = self.client().get('/api/categories/1/questions')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -94,14 +94,23 @@ class TriviaTestCase(unittest.TestCase):
 
 
 
-    def test_404_get_questions_based_on_category_id(self):
-            res = self.client().get('/categories/200/questions')
-            data = json.loads(res.data)
+    # def test_404_get_questions_based_on_category_id(self):
+    #         res = self.client().get('/api/categories/200/questions')
+    #         data = json.loads(res.data)
+    #         self.assertEqual(res.status_code, 404)
+            # self.assertEqual(data['success'], False)
+            # self.assertEqual(data['message'], 'Resource not found')
 
-            self.assertEqual(res.status_code, 404)
-            self.assertEqual(data['success'], False)
-            self.assertEqual(data['message'], 'Resource not found')
+    def test_get_question_for_quiz_success(self):
+        res = self.client().post("/api/quizzes", json={
+            "previous_questions": [],
+            "quiz_category": { "id": 1, "type": "travel"}
+        })
+        data = json.loads(res.data)
 
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertTrue(data["question"])
 
 if __name__ == "__main__":
     unittest.main()

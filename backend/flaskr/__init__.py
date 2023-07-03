@@ -267,7 +267,8 @@ def create_app(test_config=None):
             questions_list = Question.query.filter(
                 Question.category == quizz_category['id'],
                 Question.id.not_in(previous_questions)).all()
-        # No more questions return none to end the game
+      
+      
             if len(questions_list) == 0:
                    return jsonify({
                 "success": True,
@@ -309,10 +310,3 @@ def create_app(test_config=None):
     }), 422
 
     return app
-
-# {
-#   "query":"are you insane?",
-#   "answer":"maybe.",
-#   "category":"science",
-#   "difficulty":10
-# }
