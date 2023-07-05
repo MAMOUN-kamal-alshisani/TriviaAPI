@@ -5,6 +5,8 @@ from flask_cors import CORS
 import random
 import json
 from models import setup_db, Question, Category,db
+from dotenv import load_dotenv
+load_dotenv()
 
 QUESTIONS_PER_PAGE = 10
 
@@ -48,9 +50,9 @@ def create_app(test_config=None):
            else:
              return jsonify({
               'success':False,
-              'categories':[],
+              'categories':{},
               'total_categories' : 0
-        }),204
+        })
     """
     @TODO:
     Create an endpoint to handle GET requests for questions,
@@ -99,7 +101,8 @@ def create_app(test_config=None):
             "total_questions":len(questions),
             "current_category":None,
             "questions":currQuestions
-                      },204
+                      }
+            
             return jsonify(data)
         
       except Exception as e:
@@ -116,24 +119,36 @@ def create_app(test_config=None):
     @app.route('/api/question/<int:question_id>', methods = ['DELETE'])
     def handle_question_removal(question_id):
          try:
+           
            question_record = Question.query.get(question_id)
            question_record.delete()
-          #  Question.delete(question_record)
            db.session.commit()
-           data =    {
-            "success":True,
-            "message": "question with id {question_id} has been removed successfully!"
-                      },200
-           return jsonify(data)
-         
+
+           if(question_record != None):
+                
+              data =    {
+               "success":True,
+               "message": "question with id {question_id} has been removed successfully!"
+                        },200
+              return jsonify(data)
+
+           else:
+                  
+              data =    {
+             "success":False,
+             "message": "question with id {question_id} has been does not exist!"
+                      }
+              
+
+          #  return jsonify(data)
+   
 
          except Exception as e: 
            print(e)
-           data =    {
-             "success":False,
-             "message": "question with id {question_id} has been does not exist!"
-                      },204
-           return jsonify(data)
+           abort(404)
+       
+           
+           
 
     """
     @TODO:
@@ -232,9 +247,12 @@ def create_app(test_config=None):
              }),200
          else:
           return jsonify({
-              'success': False,
+               'success': False,
+              'questions': [],
+              'total_questions': len(question),
+              'current_category': category_id,
               'message': 'no questions found with the specified category id found!',
-             }),204
+             })
          
       except Exception as err:
           print(err)
@@ -259,10 +277,19 @@ def create_app(test_config=None):
           req = request.get_json()
           previous_questions = req['previous_questions']
           quizz_category = req['quiz_category']
+          # print(quizz_category,'sdsd')
+
 
           if quizz_category['id'] == 0:
                 questions = Question.query.filter(
                 Question.id.not_in(previous_questions)).all()
+                random_cquestion = random.choice(questions).format()
+                return jsonify({
+                   "success": True,
+                   "question": random_cquestion
+                               })
+    
+
           else:
             questions_list = Question.query.filter(
                 Question.category == quizz_category['id'],
@@ -277,7 +304,7 @@ def create_app(test_config=None):
 
             random_cquestion = random.choice(questions_list).format()
 
-          return jsonify({
+            return jsonify({
             "success": True,
             "question": random_cquestion
         })
@@ -310,3 +337,5 @@ def create_app(test_config=None):
     }), 422
 
     return app
+
+
