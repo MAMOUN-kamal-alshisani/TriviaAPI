@@ -9,6 +9,45 @@
 5. **_Start the react.js client app:_** -`npm start`
    **_if an error message is displayed when running `npm start command, try running:`_** -`export NODE_OPTIONS=--openssl-legacy-provider` -`npm start`
 
+## error handlers
+
+### 400 badRequest error
+
+### Response
+**_{
+        'success': False,
+        'error': 400,
+        'message': 'Bad Request'
+}**_
+
+### 404 badRequest error
+
+### Response
+**_{
+        'success': False,
+        'error': 404,
+        'message': 'Resource not found'
+}**_
+
+### 422 badRequest error
+
+### Response
+**_{
+        'success': False,
+        'error': 422,
+        'message': 'Unprocessable content'
+}**_
+
+### 500 badRequest error
+
+### Response
+**_{
+        'success': False,
+        'error': 500,
+        'message': 'Internal Server Error'
+}**_
+
+
 ## API Endpoints
 
 ### GET /api/categories
