@@ -21,7 +21,7 @@ class TriviaTestCase(unittest.TestCase):
         )
 
         self.question = {"question": "what is your name", "answer":'mamoun',"category":"science" ,"difficulty": 5}
-        self.questions = {"id":300,"question": "what is my name", "answer":'udacity',"category":"science" ,"difficulty": 5}
+        # self.questions = {"id":300,"question": "what is my name", "answer":'udacity',"category":"science" ,"difficulty": 5}
         # self.client().post("/api/question", json ={"id":75,"question": "what is my name", "answer":'udacity',"category":"science" ,"difficulty": 5})
         
         
@@ -63,7 +63,7 @@ class TriviaTestCase(unittest.TestCase):
 
 
     def test_200_create_question(self):
-        res = self.client().post("/api/question",json =self.question)
+        res = self.client().post("/api/question",json ={"question": "what is your name", "answer":'mamoun',"category":"science" ,"difficulty": 5})
         data = res.get_json()
         self.assertEqual(data["success"], True)
         self.assertEqual(res.status_code, 200)
@@ -94,7 +94,7 @@ class TriviaTestCase(unittest.TestCase):
 
 
     def test_failure_delete_question(self):
-        res = self.client().delete("/api/question/200")
+        res = self.client().delete("/api/question/sa")
         self.assertEqual(res.status_code, 404)
 
 
@@ -105,7 +105,6 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_404_search_question(self):
         res = self.client().post("/api/questions/search", json = {"search":'what'})
-        data = json.loads(res.data)
         self.assertEqual(res.status_code, 404)
         
 
@@ -113,7 +112,6 @@ class TriviaTestCase(unittest.TestCase):
     def test_200_get_questions_based_on_category_id(self):
         res = self.client().get('/api/categories/2/questions')
         data = json.loads(res.data)
-        print(data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['questions'])
@@ -130,12 +128,10 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_get_question_for_quiz_success(self):
         res = self.client().post("/api/quizzes", json={'previous_questions':[], 'quiz_category': {"type": 'click', "id": 0}})
-        data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
 
     def test_get_question_for_quiz_failure(self):
-        res = self.client().post("/api/quizzes", json={'previous_questions':[], 'quiz_category':''})
-        data = json.loads(res.data)
+        res = self.client().post("/api/quizzes", json={'previous_questions':[], 'quiz_category':{}})
         self.assertEqual(res.status_code, 404)
 
 

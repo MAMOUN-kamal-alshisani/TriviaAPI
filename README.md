@@ -3,10 +3,15 @@
 **_this backend flask ( python ) server provides restful apis for frontend react.js application to make requests that provides and sends questions_**
 
 1. **_Clone the repository:_** `git clone git@github.com:MAMOUN-kamal-alshisani/TriviaAPI.git`
+
 2. **_Install dependencies:_** `npm install`
+
 3. **Set up environment variables: Create a `.env` file and add the following variables:** -`DB_HOST`:'Database host' -`DB_USER`:'Database username' -`DB_PASSWORD`:'Database password'
+
 4. **_Start the server:_** -`export FLASK_ENV=development` -`export FLASK_APP=flaskr` -`flask run`
+
 5. **_Start the react.js client app:_** -`npm start`
+
    **_if an error message is displayed when running `npm start command, try running:`_** -`export NODE_OPTIONS=--openssl-legacy-provider` -`npm start`
 
 ## API Endpoints

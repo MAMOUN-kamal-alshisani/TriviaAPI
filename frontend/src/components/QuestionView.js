@@ -18,7 +18,7 @@ class QuestionView extends Component {
   componentDidMount() {
     this.getQuestions();
 
-    console.log(this.state.questions);
+    
 
   }
 
@@ -27,10 +27,11 @@ class QuestionView extends Component {
       url: `http://localhost:5000/api/questions?page=${this.state.page}`, //TODO: update request URL
       type: 'GET',
       success: (result) => {
+        console.log(result);
         this.setState({
           questions:result.questions,
           totalQuestions: result.total_questions,
-          categories: result.categories,
+          categories: result.categories || {'category':''},
           currentCategory: result.current_category,
         });
         return;
@@ -70,6 +71,7 @@ class QuestionView extends Component {
       url: `http://localhost:5000/api/categories/${id}/questions`, //TODO: update request URL
       type: 'GET',
       success: (result) => {
+        console.log(result);
         this.setState({
           questions: result.questions,
           totalQuestions: result.total_questions,

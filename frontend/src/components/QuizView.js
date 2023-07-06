@@ -18,7 +18,9 @@ class QuizView extends Component {
       forceEnd: false,
     };
   }
-
+  componentDidUpdate(){
+    console.log(this.state.quizCategory);
+  }
   componentDidMount() {
     $.ajax({
       url: `http://localhost:5000/api/categories`, //TODO: update request URL
@@ -37,6 +39,8 @@ class QuizView extends Component {
 
   selectCategory = ({ type, id = 0 }) => {
     this.setState({ quizCategory: { type, id } }, this.getNextQuestion);
+
+
   };
 
   handleChange = (event) => {
@@ -74,6 +78,7 @@ class QuizView extends Component {
         return;
       },
       error: (error) => {
+        console.log(error);
         alert('Unable to load question. Please try your request again');
         return;
       },
